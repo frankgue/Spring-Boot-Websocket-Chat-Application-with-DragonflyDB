@@ -1,6 +1,7 @@
 package com.gkfcsolution.websocketchatdragonflybdspringboot.config;
 
 import com.gkfcsolution.websocketchatdragonflybdspringboot.listener.RedisMessageSubscriber;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -22,7 +23,8 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
  */
 @Configuration
 public class RedisConfig {
-
+    @Value("${redis.topic:chat}")
+    private String topic;
     @Bean
     public RedisMessageListenerContainer redisMessageListenerContainer(RedisConnectionFactory redisConnectionFactory,
                                                                        MessageListenerAdapter messageListenerAdapter) {
@@ -39,7 +41,7 @@ public class RedisConfig {
 
     @Bean
     public ChannelTopic channelTopic() {
-        return new ChannelTopic("chat");
+        return new ChannelTopic(topic);
     }
 
     @Bean
