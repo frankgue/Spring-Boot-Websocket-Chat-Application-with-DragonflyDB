@@ -1,0 +1,17 @@
+services:
+  dragonflydb:
+    image: docker.dragonflydb.io/dragonflydb/dragonfly
+    container_name: dragonfly
+    hostname: dragonfly
+    privileged: true
+    ulimits:  # Pour éviter les limitations de mémoire conteneur
+      memlock: -1
+    ports:
+      - "6379:6379"
+    volumes:    # Persistance des données
+      - dragonfly_data:/data
+    command: # Exemple de flags de configuration
+      - "--dir=/data"
+      - "--dbfilename=dump.rdb"
+      - "--maxmemory=4GB"
+    restart: unless-stopped
