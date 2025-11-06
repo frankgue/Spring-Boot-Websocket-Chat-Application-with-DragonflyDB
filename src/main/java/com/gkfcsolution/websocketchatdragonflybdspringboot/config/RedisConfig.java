@@ -1,0 +1,36 @@
+package com.gkfcsolution.websocketchatdragonflybdspringboot.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.listener.ChannelTopic;
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
+
+/**
+ * Created on 2025 at 16:17
+ * File: null.java
+ * Project: websocket-chat-dragonflybd-springboot
+ *
+ * @author Frank GUEKENG
+ * @date 06/11/2025
+ * @time 16:17
+ */
+@Configuration
+public class RedisConfig {
+
+    @Bean
+    public ChannelTopic channelTopic(){
+        return new ChannelTopic("chat");
+    }
+    
+    @Bean
+    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory){
+        RedisTemplate<String, Object> template = new RedisTemplate<>();
+        template.setConnectionFactory(redisConnectionFactory);
+        template.setKeySerializer(new StringRedisSerializer());
+        template.setValueSerializer(new Jackson2JsonRedisSerializer<>(String.class));
+        return template;
+    }
+}
